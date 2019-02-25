@@ -1,0 +1,31 @@
+﻿@page "/fetchassembly"
+@using System.Reflection;
+@using System.Runtime.Loader;
+@inject HttpClient Http
+
+<button class="btn btn-primary" onclick="@FetchUsingAssemblyLoadContext">Fetch Assembly using AssemblyLoadContext</button>
+<button class="btn btn-primary" onclick="@FetchUsingAssemblyLoad">Fetch Assembly using Assembly.Load</button>
+
+<AssemblyViewer Assembly="currentAssembly" />
+<span></span>
+
+@functions {
+
+    private Assembly currentAssembly;
+
+    private async Task FetchUsingAssemblyLoadContext()
+    {
+        var externalLibStream = await Http.GetStreamAsync("_framework/_bin/BlazorLoading.ExternalLib.dll");
+        var loadedAssembly = AssemblyLoadContext.Default.LoadFromStream(externalLibStream);
+        currentAssembly = loadedAssembly;
+        StateHasChanged();
+    }
+
+    private async Task FetchUsingAssemblyLoad()
+    {
+        var externalLibBytes = await Http.GetByteArrayAsync("_framework/_bin/BlazorLoading.ExternalLib.dll");
+        var loadedAssembly = Assembly.Load(externalLibBytes);
+        currentAssembly = loadedAssembly;
+        StateHasChanged();
+    }
+}

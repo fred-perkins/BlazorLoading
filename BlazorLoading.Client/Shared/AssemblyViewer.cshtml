@@ -1,0 +1,19 @@
+﻿@using System.Reflection;
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">@(Assembly?.FullName ?? "None")</h2>
+        <ol class="list-group list-group-flush">
+            @foreach (var type in Assembly?.GetTypes() ?? Enumerable.Empty<Type>())
+            {
+                <li class="list-group-item">@type.FullName</li>
+            }
+        </ol>
+    </div>
+    
+</div>
+
+@functions{
+
+    [Parameter]
+    private Assembly Assembly { get; set; }
+}

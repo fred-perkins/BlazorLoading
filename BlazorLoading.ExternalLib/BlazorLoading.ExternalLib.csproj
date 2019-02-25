@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LibraryOutputPath>$(SolutionDir)BlazorLoading.Client\bin\Debug\netstandard2.0\dist\_framework\_bin\</LibraryOutputPath>
+  </PropertyGroup>
+
+  <Target Name="CopyAfterBuild" AfterTargets="Build">
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll"
+          DestinationFolder="$(LibraryOutputPath)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CleanOutputLibraryFiles" BeforeTargets="Clean">
+    <Delete Files="$(LibraryOutputPath)$(AssemblyName).dll" />
+  </Target>
+
+</Project>
